@@ -42,8 +42,8 @@ class Game:
 
     def load_data(self):
         game_folder = path.dirname(__file__)
-        img_folder = path.join(game_folder, 'texture')
-        self.title_font = path.join(img_folder, 'ZOMBIE.TTF')
+        img_folder = path.join(game_folder, 'textures')
+        #self.title_font = path.join(img_folder, 'ZOMBIE.TTF')
         self.map = Map(path.join(game_folder, 'MAPA.txt'))
         self.player_img = pg.image.load(path.join(img_folder, PLAYER_IMG)).convert_alpha()
         self.floor_img = pg.image.load(path.join(img_folder, FLOOR_IMG)).convert_alpha()
@@ -75,3 +75,6 @@ class Game:
 
 
 g = Game()
+while True:
+    g.new()
+    g.run()
