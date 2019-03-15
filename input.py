@@ -7,14 +7,12 @@ ws = websockets.connect(host)
 
 async def __get_input_async(host_name):
     async with websockets.connect(host_name) as websocket:
-        while True:
-            a = await websocket.recv()
-            return a
-        
-def get_input(host_name):
-    a = asyncio.get_event_loop().run_until_complete(__get_input_async(host_name))
-    return a
+        a = await websocket.recv()
+        b = await websocket.recv()
+        return a, b
 
-asyncio.get_event_loop().run_until_complete(__get_input_async(host))
+'''
+a , b = asyncio.get_event_loop().run_until_complete(__get_input_async(host))
 
-
+print(a, b)
+'''
