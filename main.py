@@ -3,6 +3,8 @@ import sys
 from os import path
 from settings import *
 from tilemap import *
+from sprites import *
+
 
 
 
@@ -44,8 +46,32 @@ class Game:
         self.title_font = path.join(img_folder, 'ZOMBIE.TTF')
         self.map = Map(path.join(game_folder, 'MAPA.txt'))
         self.player_img = pg.image.load(path.join(img_folder, PLAYER_IMG)).convert_alpha()
+        self.floor_img = pg.image.load(path.join(img_folder, FLOOR_IMG)).convert_alpha()
+        self.floor_img = pg.transform.scale(self.floor_img, (TILESIZE, TILESIZE))
 
+    def new(self):
+        self.all_sprites = pg.sprite.Group()
+        self.floor = pg.sprite.Group()
 
+        for row, tiles in enumerate(self.map.data):
+            for col, tile in enumerate(tiles):
+                Floor(self, col, row)
+
+        self.player = Player(self, 32, 35)
+
+        for row, tiles in enumerate(self.map.data):
+            for col, tile in enumerate(tiles):
+                if tile == '1':
+                    Mine(self, col, row)
+
+        self.camera = Camera(self.map.width, self.map.height)
+
+    def run(self):
+        self.playing = True
+        #pg.mixer_music.play(loops=-1)
+        while self.playing:
+            self.dt = self.clock.tick(FPS) / 1000.0
+            self.events()
 
 
 g = Game()
