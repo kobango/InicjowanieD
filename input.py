@@ -1,22 +1,18 @@
 import asyncio
 import websockets
 
-
 host = 'ws://192.168.102.59:1234/'
-async def hello():
-    async with websockets.connect(host) as ws:
-        data = (await ws.recv())
-
-        while True:
-            datapop = data
-            data = await ws.recv()
-
-            print(data)
-            print(datapop)
-            #print(type(data))
-            
+ws = websockets.connect(host)
 
 
+async def __get_input_async(host_name):
+    async with websockets.connect(host_name) as websocket:
+        a = await websocket.recv()
+        b = await websocket.recv()
+        return a, b
 
+'''
+a , b = asyncio.get_event_loop().run_until_complete(__get_input_async(host))
 
-asyncio.get_event_loop().run_until_complete(hello())
+print(a, b)
+'''
