@@ -1,10 +1,12 @@
 import numpy
 size = [30,30]
 minenumber = 30
-raw = []
-raw[0:size[0],0:size[1]] = '1'
+raw = numpy.chararray(size)
+raw[:] = '1'
+print(raw)
 
 raw[1:size[1]-1,1:size[1]-1] = '.'
+print(raw)
 mines = numpy.random.randint(1,size[1]-1,[minenumber,2])
 i = 0
 print (mines)
@@ -15,6 +17,7 @@ while i <minenumber:
 
 raw[numpy.random.randint(3,size[1]-3),numpy.random.randint(2,size[1]/2)] = 'P'
 
+raw = raw.decode('UTF-8')
 
 
 
