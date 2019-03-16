@@ -48,21 +48,28 @@ class Game:
         self.player_img = pg.image.load(path.join(img_folder, PLAYER_IMG)).convert_alpha()
         self.floor_img = pg.image.load(path.join(img_folder, FLOOR_IMG)).convert_alpha()
         self.floor_img = pg.transform.scale(self.floor_img, (TILESIZE, TILESIZE))
+        self.mine_img = pg.image.load(path.join(img_folder, MINE_IMG)).convert_alpha()
+        self.mine_img = pg.transform.scale(self.mine_img, (TILESIZE, TILESIZE))
+
 
     def new(self):
         self.all_sprites = pg.sprite.Group()
         self.floor = pg.sprite.Group()
+        self.mines = pg.sprite.Group()
 
         for row, tiles in enumerate(self.map.data):
             for col, tile in enumerate(tiles):
                 Floor(self, col, row)
 
-        self.player = Player(self, 32, 35)
-
         for row, tiles in enumerate(self.map.data):
             for col, tile in enumerate(tiles):
                 if tile == '1':
                     Mine(self, col, row)
+                # if tile == 'P':
+                #    Player(self, col, row)
+
+        #self.player = Player(self, 32, 12)
+        self.player = Player(self, 11, 11)
 
         self.camera = Camera(self.map.width, self.map.height)
 
@@ -72,6 +79,53 @@ class Game:
         while self.playing:
             self.dt = self.clock.tick(FPS) / 1000.0
             self.events()
+            self.update()
+            self.draw()
+
+    def quit(self):
+        pg.quit()
+        sys.exit()
+
+    def update(self):
+        self.all_sprites.update()
+        self.camera.update(self.player)
+
+
+    def draw_grid(self):
+        for x in range(0, WIDTH, TILESIZE):
+            pg.draw.line(self.screen, LIGHTGREY, (x, 0), (x, HEIGHT))
+        for y in range(0, HEIGHT, TILESIZE):
+            pg.draw.line(self.screen, LIGHTGREY, (0, y), (WIDTH, y))
+
+    def draw(self):
+        pg.display.set_caption("{:.2f}".format(self.clock.get_fps()))
+        self.screen.fill(DARKGREY)
+        for sprite in self.all_sprites:
+            self.screen.blit(sprite.image, self.camera.apply(sprite))
+        pg.display.flip()
+
+    def events(self):
+        # catch all events here
+        for event in pg.event.get():
+            if event.type == pg.QUIT:
+                self.quit()
+            if event.type == pg.KEYDOWN:
+                if event.key == pg.K_ESCAPE:
+                    self.quit()
+                if event.key == pg.K_p:
+                    self.paused = not self.paused
+
+    def wait_for_key(self):
+            pg.event.wait()
+            waiting = True
+            while waiting:
+                self.clock.tick(FPS)
+                for event in pg.event.get():
+                    if event.type == pg.QUIT:
+                        waiting = False
+                        self.quit()
+                    if event.type == pg.KEYUP:
+                        waiting = False
 
 
 g = Game()
