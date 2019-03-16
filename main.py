@@ -72,13 +72,13 @@ class Game:
             self.screen.fill(gray)
             title = text_format("pyBoat", font, 90, yellow)
             if selected == "start":
-                text_start = text_format("START", font, 75, white)
+                text_start = text_format("START", font, 95, white)
             else:
-                text_start = text_format("START", font, 75, black)
+                text_start = text_format("START", font, 65, black)
             if selected == "quit":
-                text_quit = text_format("QUIT", font, 75, white)
+                text_quit = text_format("QUIT", font, 95, white)
             else:
-                text_quit = text_format("QUIT", font, 75, black)
+                text_quit = text_format("QUIT", font, 65, black)
 
             title_rect = title.get_rect()
             start_rect = text_start.get_rect()
@@ -87,7 +87,7 @@ class Game:
             # Main Menu Text
             self.screen.blit(title, (WIDTH / 2 - (title_rect[2] / 2), 80))
             self.screen.blit(text_start, (WIDTH / 2 - (start_rect[2] / 2), 300))
-            self.screen.blit(text_quit, (WIDTH / 2 - (quit_rect[2] / 2), 360))
+            self.screen.blit(text_quit, (WIDTH / 2 - (quit_rect[2] / 2), 400))
             pg.display.update()
             clock.tick(FPS)
             pg.display.set_caption("Python - Pygame Simple Main Menu Selection")
@@ -127,7 +127,7 @@ class Game:
         game_folder = path.dirname(__file__)
         img_folder = path.join(game_folder, 'textures')
         #self.title_font = path.join(img_folder, 'ZOMBIE.TTF')
-        self.map = Map(path.join(game_folder, 'MAPA.txt'))
+        self.map = Map(path.join(game_folder, 'test.txt'))
         self.player_img = pg.image.load(path.join(img_folder, PLAYER_IMG)).convert_alpha()
         self.floor_img = pg.image.load(path.join(img_folder, FLOOR_IMG)).convert_alpha()
         self.floor_img = pg.transform.scale(self.floor_img, (TILESIZE, TILESIZE))
