@@ -1,5 +1,6 @@
 import pygame as pg
 import asyncio
+import data_analise
 import input_data
 from settings import *
 from tilemap import collide_hit_rect
@@ -70,15 +71,21 @@ class Player(pg.sprite.Sprite):
         self.second_thread.start()
         
     def update_rotation_speed(self):
+
         while self.health is not 0:
             speed = input_data._Player__get_input_async_fast(input_data.host)
             speed = asyncio.run(speed)
-            self.rotation_speed = float(speed[1:-1].split(':')[-1])
+
+            if 'Stopped' in speed:
+                continue
+
+            self.rotation_speed = data_analise.spliting(speed)
+
             print(self.rotation_speed)
             time.sleep(0.001)
         
     def get_keys(self):
-        self.rot_speed = self.rotation_speed * PLAYER_ROT_SPEED
+        self.rot_speed = self.rotation_speed * PLAYER_ROT_SPEED*0.8
         self.vel = vec(PLAYER_SPEED, 0).rotate(-self.rot)
         #self.vel = vec(0, 0)
         #self.vel = vec(PLAYER_SPEED, 0).rotate(-self.rot)
