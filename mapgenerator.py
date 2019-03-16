@@ -1,6 +1,6 @@
 import numpy
-size = [30,30]
-minenumber = 30
+size = [120,120]
+minenumber = 200
 raw = numpy.chararray(size)
 raw[:] = '1'
 print(raw)
