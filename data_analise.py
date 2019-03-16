@@ -1,8 +1,8 @@
-txt = """""value":0.10042671494995892"""
-txt2 = """""value":0.80042671494995892"""
-txt3 = """""value":0.42680770292345938"""
-txt4 =  """""value":0.68400704549073121"""
-txt5 = """""status":"Stopped"""
+txt = """""{value":0.10042671494995892}"""
+txt2 = """""{value":0.80042671494995892}"""
+txt3 = """""{value":0.42680770292345938}"""
+txt4 =  """""{value":0.68400704549073121}"""
+txt5 = """""{status":"Stopped}"""
 def spliting (txt):
     x = txt.split(':')
     x = x[1]
@@ -13,6 +13,7 @@ def spliting (txt):
 def windowmake(walue):
     warray = [walue,walue,walue,walue,walue]
     return warray
+
 def windowpeek(window,walue):
     window.append(walue)
     window.pop(0)
@@ -42,8 +43,10 @@ def makenum(rawarray):
     return array
 
 def addnum(array,rawtxt):
-    value = spliting(rawtxt)
-    array = windowpeek(array,value)
+    if(iscorect(rawtxt)):
+
+        value = spliting(rawtxt)
+        array = windowpeek(array,value)
     return  array
 
 
@@ -58,8 +61,10 @@ array = windowmake(walue)
 print(array)
 array = windowpeek(array,walue2)
 print(array)
+print(windowmean(array))
 array = windowpeek(array,walue2)
 print(array)
 array = windowpeek(array,walue2)
+array = addnum(array,txt5)
 print(array)
-print(iscorect(txt5))
+print(windowmean(array))
