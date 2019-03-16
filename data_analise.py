@@ -6,7 +6,7 @@ txt5 = """""{status":"Stopped}"""
 def spliting (txt):
     x = txt.split(':')
     x = x[1]
-    x = x[1:len(x)-1]
+    x = x[0:len(x)-1]
     zeta = float(x)
     return (zeta)
 
@@ -35,7 +35,6 @@ def windowmean(array):
 
 def makenum(rawarray):
     array = []
-
     for i in rawarray:
 
         if(iscorect(i)):
@@ -48,6 +47,19 @@ def addnum(array,rawtxt):
         value = spliting(rawtxt)
         array = windowpeek(array,value)
     return  array
+
+def fastmean(array):
+    return sum(array)/len(array)
+
+def fastsplit(rawarray):
+    array = []
+    for i in rawarray:
+        array = array.append(spliting(i))
+    return array
+
+
+
+
 
 
 
