@@ -85,18 +85,18 @@ class Player(pg.sprite.Sprite):
             time.sleep(0.001)
         
     def get_keys(self):
-        self.rot_speed = self.rotation_speed * PLAYER_ROT_SPEED
+        zeta = self.rotation_speed * PLAYER_ROT_SPEED
         self.vel = vec(PLAYER_SPEED, 0).rotate(-self.rot)
         #self.vel = vec(0, 0)
         #self.vel = vec(PLAYER_SPEED, 0).rotate(-self.rot)
         keys = pg.key.get_pressed()
         
-        if keys[pg.K_LEFT] or keys[pg.K_a]:
-            #self.rot_speed = PLAYER_ROT_SPEED
-            self.rotation_speed += 0.05
-        if keys[pg.K_RIGHT] or keys[pg.K_d]:
-            #self.rot_speed = -PLAYER_ROT_SPEED
-            self.rotation_speed -= 0.05
+        if keys[pg.K_LEFT] or keys[pg.K_a] or zeta<-0.2:
+            self.rot_speed = PLAYER_ROT_SPEED
+            #self.rotation_speed += 0.05
+        if keys[pg.K_RIGHT] or keys[pg.K_d] or zeta>0.2:
+            self.rot_speed = -PLAYER_ROT_SPEED
+            #self.rotation_speed -= 0.05
         '''
         if keys[pg.K_UP] or keys[pg.K_w]:
             self.vel = vec(PLAYER_SPEED, 0).rotate(-self.rot)
