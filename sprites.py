@@ -1,7 +1,12 @@
 import pygame as pg
+import asyncio
+import input_data
 from settings import *
 from tilemap import collide_hit_rect
+import threading
+import time
 vec = pg.math.Vector2
+
 
 def collide_with_mines(sprite, group, dir):
     if dir == 'x':
@@ -44,6 +49,8 @@ def collide_with_end_points(sprite, group, dir):
             sprite.hit_rect.centery = sprite.pos.y
 
 class Player(pg.sprite.Sprite):
+
+    
     def __init__(self, game, x, y):
         self.groups = game.all_sprites
         pg.sprite.Sprite.__init__(self, self.groups)
@@ -52,16 +59,29 @@ class Player(pg.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.hit_rect = PLAYER_HIT_RECT
         self.hit_rect.center = self.rect.center
-        self.vel = vec(0, 0)
+        self.vel = vec(10, 0)
         self.pos = vec(x, y) * TILESIZE
         self.rot = 0
         self.last_shot = 0
         self.health = PLAYER_HEALTH
-
+        self.rotation_speed = 0
+        self.second_thread = threading.Thread(target = self.update_rotation_speed, args=())
+        self.second_thread.start()
+        
+    def update_rotation_speed(self):
+        while self.health > 0:
+            speed = input_data._Player__get_input_async_fast(input_data.host)
+            speed = asyncio.run(speed)
+            self.rotation_speed = float(speed[1:-1].split(':')[-1])
+            print(self.rotation_speed)
+            time.sleep(0.001)
+        
     def get_keys(self):
-        self.rot_speed = 0
-        self.vel = vec(0, 0)
+        self.rot_speed = self.rotation_speed * PLAYER_ROT_SPEED
+        #self.vel = vec(0, 0)
+        #self.vel = vec(PLAYER_SPEED, 0).rotate(-self.rot)
         keys = pg.key.get_pressed()
+        '''
         if keys[pg.K_LEFT] or keys[pg.K_a]:
             self.rot_speed = PLAYER_ROT_SPEED
         if keys[pg.K_RIGHT] or keys[pg.K_d]:
@@ -70,7 +90,7 @@ class Player(pg.sprite.Sprite):
             self.vel = vec(PLAYER_SPEED, 0).rotate(-self.rot)
         if keys[pg.K_DOWN] or keys[pg.K_s]:
             self.vel = vec(-PLAYER_SPEED / 2, 0).rotate(-self.rot)
-
+        '''
     def update(self):
         self.get_keys()
         self.rot = (self.rot + self.rot_speed * self.game.dt) % 360

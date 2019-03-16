@@ -16,6 +16,7 @@ class Game:
         pg.display.set_caption(TITLE)
         self.clock = pg.time.Clock()
         self.load_data()
+        
 
     def draw_text(self, text, font_name, size, color, x, y, align="nw"):
         font = pg.font.Font(font_name, size)
@@ -89,6 +90,7 @@ class Game:
             self.draw()
 
     def quit(self):
+        self.player.health = 0
         pg.quit()
         sys.exit()
 

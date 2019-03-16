@@ -66,17 +66,3 @@ def fastsplit(rawarray):
 
 
 
-
-walue = spliting(txt)
-walue2 = spliting(txt2)
-array = windowmake(walue)
-print(array)
-array = windowpeek(array,walue2)
-print(array)
-print(windowmean(array))
-array = windowpeek(array,walue2)
-print(array)
-array = windowpeek(array,walue2)
-array = addnum(array,txt5)
-print(array)
-print(windowmean(array))

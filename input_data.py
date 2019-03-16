@@ -26,6 +26,13 @@ async def __get_input_async_fast(host_name):
 
         return first
 
+async def _Player__get_input_async_fast(host_name):
+    async with websockets.connect(host_name) as websocket:
+        first = await websocket.recv()
+
+        return first
+
+'''
 a = asyncio.get_event_loop().run_until_complete(__get_input_list_async(host, 3))
 a = data_analise.makenum(a)
 print(a)
@@ -37,4 +44,5 @@ while True:
     mean = data_analise.fastmean(a)
 
     print(mean)
+    '''
 
