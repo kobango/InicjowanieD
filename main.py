@@ -5,11 +5,93 @@ from settings import *
 from tilemap import *
 from sprites import *
 import time
+import os
 
 
 
 
 class Game:
+
+    # Main Menu
+    def main_menu(self):
+
+        menu = True
+        selected = "start"
+        os.environ['SDL_VIDEO_CENTERED'] = '1'
+
+        # Game Resolution
+
+        self.screen = pg.display.set_mode((WIDTH, HEIGHT))
+
+        # Text Renderer
+        def text_format(message, textFont, textSize, textColor):
+            newFont = pg.font.Font(textFont, textSize)
+            newText = newFont.render(message, 0, textColor)
+
+            return newText
+
+        # Colors
+        white = (255, 255, 255)
+        black = (0, 0, 0)
+        gray = (50, 50, 50)
+        red = (255, 0, 0)
+        green = (0, 255, 0)
+        blue = (0, 0, 255)
+        yellow = (255, 255, 0)
+
+        # Game Fonts
+        font = "VICTM___.TTF"
+
+        # Game Framerate
+        clock = pg.time.Clock()
+        FPS = 30
+
+
+        while menu:
+            for event in pg.event.get():
+                if event.type == pg.QUIT:
+                    pg.quit()
+                    quit()
+                if event.type == pg.KEYDOWN:
+                    if event.key == pg.K_UP:
+                        selected = "start"
+                    elif event.key == pg.K_DOWN:
+                        selected = "quit"
+                    if event.key == pg.K_RETURN:
+                        if selected == "start":
+                            print("Start")
+                            g.new()
+                            g.run()
+
+
+                        if selected == "quit":
+                            pg.quit()
+                            quit()
+
+            # Main Menu UI
+            self.screen.fill(gray)
+            title = text_format("pyBoat", font, 90, yellow)
+            if selected == "start":
+                text_start = text_format("START", font, 95, white)
+            else:
+                text_start = text_format("START", font, 65, black)
+            if selected == "quit":
+                text_quit = text_format("QUIT", font, 95, white)
+            else:
+                text_quit = text_format("QUIT", font, 65, black)
+
+            title_rect = title.get_rect()
+            start_rect = text_start.get_rect()
+            quit_rect = text_quit.get_rect()
+
+            # Main Menu Text
+            self.screen.blit(title, (WIDTH / 2 - (title_rect[2] / 2), 80))
+            self.screen.blit(text_start, (WIDTH / 2 - (start_rect[2] / 2), 300))
+            self.screen.blit(text_quit, (WIDTH / 2 - (quit_rect[2] / 2), 400))
+            pg.display.update()
+            clock.tick(FPS)
+            pg.display.set_caption("Python - Pygame Simple Main Menu Selection")
+
     def __init__(self):
         pg.init()
         self.screen = pg.display.set_mode((WIDTH, HEIGHT))
@@ -46,7 +128,7 @@ class Game:
         game_folder = path.dirname(__file__)
         img_folder = path.join(game_folder, 'textures')
         #self.title_font = path.join(img_folder, 'ZOMBIE.TTF')
-        self.map = Map(path.join(game_folder, 'MAPA.txt'))
+        self.map = Map(path.join(game_folder,'test.txt'))
         self.player_img = pg.image.load(path.join(img_folder, PLAYER_IMG)).convert_alpha()
         self.floor_img = pg.image.load(path.join(img_folder, FLOOR_IMG)).convert_alpha()
         self.floor_img = pg.transform.scale(self.floor_img, (TILESIZE, TILESIZE))
@@ -73,10 +155,12 @@ class Game:
                     Mine(self, col, row)
                 if tile == 'E':
                     End_Point(self, col, row)
+                if tile == 'P':
+                    self.player = Player(self, col, row)
 
 
         #self.player = Player(self, 32, 12)
-        self.player = Player(self, 11, 11)
+
 
         self.camera = Camera(self.map.width, self.map.height)
 
@@ -167,6 +251,7 @@ class Game:
 
 
 g = Game()
+g.main_menu()
 while True:
     g.new()
     g.run()
