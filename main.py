@@ -4,6 +4,7 @@ from os import path
 from settings import *
 from tilemap import *
 from sprites import *
+import time
 
 
 
@@ -50,12 +51,16 @@ class Game:
         self.floor_img = pg.transform.scale(self.floor_img, (TILESIZE, TILESIZE))
         self.mine_img = pg.image.load(path.join(img_folder, MINE_IMG)).convert_alpha()
         self.mine_img = pg.transform.scale(self.mine_img, (TILESIZE, TILESIZE))
+        self.end_img = pg.image.load(path.join(img_folder, END_IMG)).convert_alpha()
+        self.end_img = pg.transform.scale(self.end_img, (TILESIZE, TILESIZE))
+        self.title_font = path.join(img_folder, 'ZOMBIE.TTF')
 
 
     def new(self):
         self.all_sprites = pg.sprite.Group()
         self.floor = pg.sprite.Group()
         self.mines = pg.sprite.Group()
+        self.end_points = pg.sprite.Group()
 
         for row, tiles in enumerate(self.map.data):
             for col, tile in enumerate(tiles):
@@ -65,8 +70,9 @@ class Game:
             for col, tile in enumerate(tiles):
                 if tile == '1':
                     Mine(self, col, row)
-                # if tile == 'P':
-                #    Player(self, col, row)
+                if tile == 'E':
+                    End_Point(self, col, row)
+
 
         #self.player = Player(self, 32, 12)
         self.player = Player(self, 11, 11)
@@ -89,7 +95,25 @@ class Game:
     def update(self):
         self.all_sprites.update()
         self.camera.update(self.player)
+        self.loose_text = False
+        self.win_text = False
 
+        hits = pg.sprite.spritecollide(self.player, self.mines, False)
+        for hit in hits:
+            self.player.health = 0
+            Mine.health = 0
+            hit.vel = vec(0, 0)
+            if self.player.health == 0:
+                self.loose_text = True
+                # time.sleep(3)
+                # self.playing = False
+
+        hits = pg.sprite.spritecollide(self.player, self.end_points, False)
+        for hit in hits:
+            self.player.health = 2
+            hit.vel = vec(0, 0)
+            if self.player.health == 2:
+                self.win_text = True
 
     def draw_grid(self):
         for x in range(0, WIDTH, TILESIZE):
@@ -102,6 +126,19 @@ class Game:
         self.screen.fill(DARKGREY)
         for sprite in self.all_sprites:
             self.screen.blit(sprite.image, self.camera.apply(sprite))
+
+        if self.loose_text:
+            self.draw_text("TRY AGAIN", self.title_font, 105, RED, WIDTH / 2, HEIGHT / 2, align="center")
+            pg.display.flip()
+            time.sleep(2)
+            self.playing = False
+        if self.win_text:
+            self.draw_text("YOU WIN", self.title_font, 105, RED, WIDTH / 2, HEIGHT / 2, align="center")
+            pg.display.flip()
+            time.sleep(2)
+            self.playing = False
+
+
         pg.display.flip()
 
     def events(self):

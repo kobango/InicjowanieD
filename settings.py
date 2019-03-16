@@ -7,6 +7,7 @@ HEIGHT = 768
 
 DARKGREY = (40, 40, 40)
 LIGHTGREY = (100, 100, 100)
+RED = (255, 0, 0)
 
 FPS = 60
 TITLE = "pyBoat"
@@ -18,10 +19,14 @@ GRIDHEIGHT = HEIGHT / TILESIZE
 
 PLAYER_IMG = 'uBoat2.png'
 MINE_IMG = 'mine2.png'
+#FLOOR_IMG = 'ocean.jpg'
 FLOOR_IMG = 'ocean2.png'
+#FLOOR_IMG = 'ocean3.jpg'
+
+END_IMG = 'flag.png'
 
 PLAYER_HEALTH = 1
-PLAYER_SPEED = 300
-PLAYER_ROT_SPEED = 250
+PLAYER_SPEED = 500
+PLAYER_ROT_SPEED = 200
 PLAYER_HIT_RECT = pg.Rect(0, 0, 35, 35)
 BARREL_OFFSET = vec(20, 0)

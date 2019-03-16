@@ -23,6 +23,26 @@ def collide_with_mines(sprite, group, dir):
             sprite.vel.y = 0
             sprite.hit_rect.centery = sprite.pos.y
 
+def collide_with_end_points(sprite, group, dir):
+    if dir == 'x':
+        hits = pg.sprite.spritecollide(sprite, group, False, collide_hit_rect)
+        if hits:
+            if hits[0].rect.centerx > sprite.hit_rect.centerx:
+                sprite.pos.x = hits[0].rect.left - sprite.hit_rect.width / 2
+            if hits[0].rect.centerx < sprite.hit_rect.centerx:
+                sprite.pos.x = hits[0].rect.right + sprite.hit_rect.width / 2
+            sprite.vel.x = 0
+            sprite.hit_rect.centerx = sprite.pos.x
+    if dir == 'y':
+        hits = pg.sprite.spritecollide(sprite, group, False, collide_hit_rect)
+        if hits:
+            if hits[0].rect.centery > sprite.hit_rect.centery:
+                sprite.pos.y = hits[0].rect.top - sprite.hit_rect.height / 2
+            if hits[0].rect.centery < sprite.hit_rect.centery:
+                sprite.pos.y = hits[0].rect.bottom + sprite.hit_rect.height / 2
+            sprite.vel.y = 0
+            sprite.hit_rect.centery = sprite.pos.y
+
 class Player(pg.sprite.Sprite):
     def __init__(self, game, x, y):
         self.groups = game.all_sprites
@@ -64,6 +84,12 @@ class Player(pg.sprite.Sprite):
         collide_with_mines(self, self.game.mines, 'y')
         self.rect.center = self.hit_rect.center
 
+        self.hit_rect.centerx = self.pos.x
+        collide_with_end_points(self, self.game.end_points, 'x')
+        self.hit_rect.centery = self.pos.y
+        collide_with_end_points(self, self.game.end_points, 'y')
+        self.rect.center = self.hit_rect.center
+
 class Mine(pg.sprite.Sprite):
     def __init__(self, game, x, y):
         self.groups = game.all_sprites, game.mines
@@ -75,10 +101,28 @@ class Mine(pg.sprite.Sprite):
         self.y = y
         self.rect.x = x * TILESIZE
         self.rect.y = y * TILESIZE
+        self.health = PLAYER_HEALTH
+
+    def update(self):
+        if self.health == 0:
+            self.kill()
+
+class End_Point(pg.sprite.Sprite):
+    def __init__(self, game, x, y):
+        self.groups = game.all_sprites, game.end_points
+        pg.sprite.Sprite.__init__(self, self.groups)
+        self.game = game
+        self.image = game.end_img
+        self.rect = self.image.get_rect()
+        self.x = x
+        self.y = y
+        self.rect.x = x * TILESIZE
+        self.rect.y = y * TILESIZE
+        self.health = PLAYER_HEALTH
 
 class Floor(pg.sprite.Sprite):
     def __init__(self, game, x, y):
-        self.groups = game.all_sprites, #game.walls
+        self.groups = game.all_sprites,
         pg.sprite.Sprite.__init__(self, self.groups)
         self.game = game
         self.image = game.floor_img
