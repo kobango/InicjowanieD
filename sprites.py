@@ -85,7 +85,7 @@ class Player(pg.sprite.Sprite):
             time.sleep(0.001)
         
     def get_keys(self):
-        self.rot_speed = self.rotation_speed * PLAYER_ROT_SPEED*0.8
+        self.rot_speed = self.rotation_speed * PLAYER_ROT_SPEED
         self.vel = vec(PLAYER_SPEED, 0).rotate(-self.rot)
         #self.vel = vec(0, 0)
         #self.vel = vec(PLAYER_SPEED, 0).rotate(-self.rot)
