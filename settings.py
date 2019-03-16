@@ -17,12 +17,9 @@ TILESIZE = 64
 GRIDWIDTH = WIDTH / TILESIZE
 GRIDHEIGHT = HEIGHT / TILESIZE
 
-PLAYER_IMG = 'uBoat2.png'
-MINE_IMG = 'mine2.png'
-#FLOOR_IMG = 'ocean.jpg'
-FLOOR_IMG = 'ocean2.png'
-#FLOOR_IMG = 'ocean3.jpg'
-
+PLAYER_IMG = 'uBoat.png'
+MINE_IMG = 'mine.png'
+FLOOR_IMG = 'ocean.png'
 END_IMG = 'flag.png'
 
 PLAYER_HEALTH = 1
