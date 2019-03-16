@@ -1,6 +1,6 @@
 import asyncio
 import websockets
-import  danalise
+import  data_analise
 import random
 
 async def hello(websocket, path):
@@ -8,7 +8,7 @@ async def hello(websocket, path):
     print(f"< {name}")
 
 
-    array = [danalise.txt,danalise.txt2,danalise.txt2,danalise.txt,danalise.txt3]
+    array = [data_analise.txt, data_analise.txt2, data_analise.txt2, data_analise.txt, data_analise.txt3]
     while True:
         data = array[random.randrange(4)]
         await websocket.send(data)

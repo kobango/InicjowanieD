@@ -1,5 +1,6 @@
 import asyncio
 import websockets
+import  data_analise
 
 host = 'ws://192.168.102.59:1234/'
 ws = websockets.connect(host)
@@ -19,8 +20,9 @@ async def __get_input_async(host_name):
         return first, second
         
 
-'''
-a, b = asyncio.get_event_loop().run_until_complete(__get_input_async(host))
 
-print(a, b)
-'''
+while True:
+    a = asyncio.get_event_loop().run_until_complete(__get_input_list_async(host,2))
+
+    print(a)
+
