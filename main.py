@@ -127,7 +127,7 @@ class Game:
         game_folder = path.dirname(__file__)
         img_folder = path.join(game_folder, 'textures')
         #self.title_font = path.join(img_folder, 'ZOMBIE.TTF')
-        self.map = Map(path.join(game_folder, 'test.txt'))
+        self.map = Map(path.join(game_folder,'test.txt'))
         self.player_img = pg.image.load(path.join(img_folder, PLAYER_IMG)).convert_alpha()
         self.floor_img = pg.image.load(path.join(img_folder, FLOOR_IMG)).convert_alpha()
         self.floor_img = pg.transform.scale(self.floor_img, (TILESIZE, TILESIZE))
@@ -154,10 +154,12 @@ class Game:
                     Mine(self, col, row)
                 if tile == 'E':
                     End_Point(self, col, row)
+                if tile == 'P':
+                    self.player = Player(self, col, row)
 
 
         #self.player = Player(self, 32, 12)
-        self.player = Player(self, 11, 11)
+
 
         self.camera = Camera(self.map.width, self.map.height)
 
